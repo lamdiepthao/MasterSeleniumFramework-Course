@@ -3,7 +3,9 @@ package org.selenium;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.selenium.pom.BaseTest;
+import org.selenium.pom.base.BaseTest;
+import org.selenium.pom.pages.HomePage;
+import org.selenium.pom.pages.StorePage;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -13,9 +15,18 @@ public class MyFirstTestCase extends BaseTest {
     public void guestCheckoutUsingDirectBankTransfer() throws InterruptedException {
         // System.setProperty("webdriver.chrome.driver", "path/to/chromedriver.exe"); ko can, do da setup home_variable
         driver.get("https://askomdch.com");
+
+        HomePage homePage = new HomePage(driver);
+        StorePage storePage = homePage.clickStoreMenuLink();
+        storePage.
+                enterTextInSearchFld("Blue").
+                clickAddToCartBtn();
+        Assert.assertEquals(storePage.getTitle(), "Search results: “Blue”");
+        storePage.clickAddToCartBtn();
+
         driver.findElement(By.cssSelector("#menu-item-1227 > a")).click();
         driver.findElement(By.id("woocommerce-product-search-field-0")).sendKeys("Blue");
-        driver.findElement(By.cssSelector("button[value='Search']")).click();
+//        driver.findElement(By.cssSelector("button[value='Search']")).click();
         Assert.assertEquals(
                 driver.findElement(By.cssSelector(".woocommerce-products-header__title.page-title")).getText(),
                 "Search results: “Blue”"
