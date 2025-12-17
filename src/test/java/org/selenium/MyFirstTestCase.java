@@ -16,11 +16,10 @@ public class MyFirstTestCase extends BaseTest {
     @Test
     public void guestCheckoutUsingDirectBankTransfer() throws InterruptedException {
         // System.setProperty("webdriver.chrome.driver", "path/to/chromedriver.exe"); ko can, do da setup home_variable
-        driver.get("https://askomdch.com");
-
-        HomePage homePage = new HomePage(driver);
-        StorePage storePage = homePage.clickStoreMenuLink();
-        storePage.search("Blue");
+       StorePage storePage = new HomePage(driver).
+                load().
+                navigateToStoreUsingMenu().
+                search("Blue");
         Assert.assertEquals(storePage.getTitle(), "Search results: “Blue”");
 
         storePage.clickAddToCartBtn("Blue Shoes");
@@ -36,9 +35,10 @@ public class MyFirstTestCase extends BaseTest {
                 enterAddressLineOne("San Francisco").
                 enterCity("San Francisco").
                 enterPostCode("94188").
-                enterEmail("thaothao2@gmail.com").
-                placeOrder();
-        Thread.sleep(6000);
+                enterEmail("thaothao2@gmail.com");
+       Thread.sleep(3000);
+       checkoutPage.placeOrder();
+        Thread.sleep(5000);
         Assert.assertEquals(checkoutPage.getNotice(), "Thank you. Your order has been received.");
 
     }

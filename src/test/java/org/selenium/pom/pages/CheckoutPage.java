@@ -44,14 +44,14 @@ public class CheckoutPage extends BasePage {
         driver.findElement(billingEmailFld).sendKeys(billingEmail);
         return this;
     }
-    public CheckoutPage placeOrder (String placeOrder){
-        driver.findElement(placeOrderBtn).sendKeys(placeOrder);
-        return this;
+    public CheckoutPage placeOrder (){
+        driver.findElement(placeOrderBtn).click();
+        return new CheckoutPage(driver);
+        //return this;
     }
     public String getNotice (){
        return driver.findElement(successNotice).getText();
     }
 
-    public void placeOrder() {
-    }
+
 }
