@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.selenium.pom.base.BaseTest;
+import org.selenium.pom.pages.CartPage;
 import org.selenium.pom.pages.HomePage;
 import org.selenium.pom.pages.StorePage;
 import org.testng.Assert;
@@ -18,27 +19,17 @@ public class MyFirstTestCase extends BaseTest {
 
         HomePage homePage = new HomePage(driver);
         StorePage storePage = homePage.clickStoreMenuLink();
-        storePage.
-                enterTextInSearchFld("Blue").
-                clickAddToCartBtn();
+        storePage.search("Blue");
         Assert.assertEquals(storePage.getTitle(), "Search results: “Blue”");
-        storePage.clickAddToCartBtn();
-
-        driver.findElement(By.cssSelector("#menu-item-1227 > a")).click();
-        driver.findElement(By.id("woocommerce-product-search-field-0")).sendKeys("Blue");
-//        driver.findElement(By.cssSelector("button[value='Search']")).click();
-        Assert.assertEquals(
-                driver.findElement(By.cssSelector(".woocommerce-products-header__title.page-title")).getText(),
-                "Search results: “Blue”"
-        );
-        driver.findElement(By.cssSelector("a[aria-label='Add “Blue Shoes” to your cart']")).click();
+        storePage.clickAddToCartBtn("Blue Shoes");
         Thread.sleep(5000);
-        driver.findElement(By.cssSelector("a[title='View cart']")).click();
-        Assert.assertEquals(
-                driver.findElement(By.cssSelector("td[class='product-name'] a")).getText(),
-                "Blue Shoes"
-        );
-        driver.findElement(By.cssSelector(".checkout-button")).click();
+        CartPage cartPage = storePage.clickViewCart();
+
+        Assert.assertEquals(cartPage.getProductName(),"Blue Shoes");
+        CheckoutPage checkoutPage = cartPage.clickCheckoutBtn();
+
+
+        //driver.findElement(By.cssSelector(".checkout-button")).click();
         driver.findElement(By.cssSelector("#billing_first_name")).sendKeys("Thao");
         driver.findElement(By.cssSelector("#billing_last_name")).sendKeys("Lam");
         driver.findElement(By.cssSelector("#billing_address_1")).sendKeys("123 A. B, C");
