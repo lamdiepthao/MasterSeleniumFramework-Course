@@ -3,6 +3,7 @@ package org.selenium;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.selenium.pom.Objects.BillingAddress;
 import org.selenium.pom.base.BaseTest;
 import org.selenium.pom.pages.CartPage;
 import org.selenium.pom.pages.CheckoutPage;
@@ -16,7 +17,17 @@ public class MyFirstTestCase extends BaseTest {
     @Test
     public void guestCheckoutUsingDirectBankTransfer() throws InterruptedException {
         // System.setProperty("webdriver.chrome.driver", "path/to/chromedriver.exe"); ko can, do da setup home_variable
-       StorePage storePage = new HomePage(driver).
+//        BillingAddress billingAddress = new BillingAddress().
+//                setFirstName("thao2").
+//                setLastName("thao").
+//                setAddressLineOne("San Francisco").
+//                setCity("San Francisco").
+//                setPostCode("94188").
+//                setEmail("thaothao2@gmail.com");
+        BillingAddress billingAddress = new BillingAddress("thao2", "thao","San Francisco", "San Francisco"
+        , "94188", "thaothao2@gmail.com");
+
+        StorePage storePage = new HomePage(driver).
                 load().
                 navigateToStoreUsingMenu().
                 search("Blue");
@@ -28,16 +39,11 @@ public class MyFirstTestCase extends BaseTest {
         Thread.sleep(5000);
         Assert.assertEquals(cartPage.getProductName(),"Blue Shoes");
 
-        CheckoutPage checkoutPage = cartPage.clickCheckoutBtn();
-        checkoutPage.
-                enterFirstName("thao2").
-                enterLastName("thao").
-                enterAddressLineOne("San Francisco").
-                enterCity("San Francisco").
-                enterPostCode("94188").
-                enterEmail("thaothao2@gmail.com");
-       Thread.sleep(3000);
-       checkoutPage.placeOrder();
+        CheckoutPage checkoutPage = cartPage.
+                clickCheckoutBtn().
+                setBillingAddress(billingAddress);
+        Thread.sleep(5000);
+        driver.findElement(By.cssSelector("#place_order")).click();
         Thread.sleep(5000);
         Assert.assertEquals(checkoutPage.getNotice(), "Thank you. Your order has been received.");
 
