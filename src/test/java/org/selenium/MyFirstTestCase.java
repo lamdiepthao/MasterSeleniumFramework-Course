@@ -9,28 +9,26 @@ import org.selenium.pom.pages.CartPage;
 import org.selenium.pom.pages.CheckoutPage;
 import org.selenium.pom.pages.HomePage;
 import org.selenium.pom.pages.StorePage;
+import org.selenium.pom.utils.JacksonUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 public class MyFirstTestCase extends BaseTest {
 
     @Test
-    public void guestCheckoutUsingDirectBankTransfer() throws InterruptedException {
-        // System.setProperty("webdriver.chrome.driver", "path/to/chromedriver.exe"); ko can, do da setup home_variable
-//        BillingAddress billingAddress = new BillingAddress().
-//                setFirstName("thao2").
-//                setLastName("thao").
-//                setAddressLineOne("San Francisco").
-//                setCity("San Francisco").
-//                setPostCode("94188").
-//                setEmail("thaothao2@gmail.com");
-        BillingAddress billingAddress = new BillingAddress("thao2", "thao","San Francisco", "San Francisco"
-        , "94188", "thaothao2@gmail.com");
+    public void guestCheckoutUsingDirectBankTransfer() throws InterruptedException, IOException {
+        BillingAddress billingAddress = new BillingAddress();
+        InputStream is = getClass().getClassLoader().getResourceAsStream("myBillingAddress.json");
+        billingAddress = JacksonUtils.deserializeJson(is, billingAddress);
 
         StorePage storePage = new HomePage(driver).
                 load().
                 navigateToStoreUsingMenu().
                 search("Blue");
+        Thread.sleep(5000);
         Assert.assertEquals(storePage.getTitle(), "Search results: “Blue”");
 
         storePage.clickAddToCartBtn("Blue Shoes");
