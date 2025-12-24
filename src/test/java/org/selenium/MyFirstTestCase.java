@@ -3,8 +3,9 @@ package org.selenium;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.selenium.pom.Objects.BillingAddress;
+import org.selenium.pom.objects.BillingAddress;
 import org.selenium.pom.base.BaseTest;
+import org.selenium.pom.objects.Product;
 import org.selenium.pom.pages.CartPage;
 import org.selenium.pom.pages.CheckoutPage;
 import org.selenium.pom.pages.HomePage;
@@ -14,28 +15,27 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 public class MyFirstTestCase extends BaseTest {
 
     @Test
     public void guestCheckoutUsingDirectBankTransfer() throws InterruptedException, IOException {
-        BillingAddress billingAddress = new BillingAddress();
-        InputStream is = getClass().getClassLoader().getResourceAsStream("myBillingAddress.json");
-        billingAddress = JacksonUtils.deserializeJson(is, billingAddress);
+        String searchFor = "Blue";
+        BillingAddress billingAddress = JacksonUtils.deserializeJson("myBillingAddress.json", BillingAddress.class);
 
+        Product product = new Product(1215);
         StorePage storePage = new HomePage(driver).
                 load().
                 navigateToStoreUsingMenu().
-                search("Blue");
+                search(searchFor);
         Thread.sleep(5000);
-        Assert.assertEquals(storePage.getTitle(), "Search results: “Blue”");
-
-        storePage.clickAddToCartBtn("Blue Shoes");
+        Assert.assertEquals(storePage.getTitle(),"Search results: “" + searchFor + "”");
+        Thread.sleep(3000);
+        storePage.clickAddToCartBtn(product.getName());
         Thread.sleep(6000);
         CartPage cartPage = storePage.clickViewCart();
         Thread.sleep(5000);
-        Assert.assertEquals(cartPage.getProductName(),"Blue Shoes");
+        Assert.assertEquals(cartPage.getProductName(), product.getName());
 
         CheckoutPage checkoutPage = cartPage.
                 clickCheckoutBtn().

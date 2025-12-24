@@ -2,7 +2,7 @@ package org.selenium.pom.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.selenium.pom.Objects.BillingAddress;
+import org.selenium.pom.objects.BillingAddress;
 import org.selenium.pom.base.BasePage;
 
 public class CheckoutPage extends BasePage {

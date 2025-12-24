@@ -1,4 +1,4 @@
-package org.selenium.pom.Objects;
+package org.selenium.pom.objects;
 
 public class BillingAddress {
     private String firstName;
