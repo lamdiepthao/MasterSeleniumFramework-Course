@@ -19,7 +19,7 @@ import java.io.IOException;
 public class MyFirstTestCase extends BaseTest {
 
     @Test
-    public void guestCheckoutUsingDirectBankTransfer() throws InterruptedException, IOException {
+    public void guestCheckoutUsingDirectBankTransfer() throws IOException {
         String searchFor = "Blue";
         BillingAddress billingAddress = JacksonUtils.deserializeJson("myBillingAddress.json", BillingAddress.class);
 
@@ -28,21 +28,21 @@ public class MyFirstTestCase extends BaseTest {
                 load().
                 navigateToStoreUsingMenu().
                 search(searchFor);
-        Thread.sleep(5000);
+
         Assert.assertEquals(storePage.getTitle(),"Search results: “" + searchFor + "”");
-        Thread.sleep(3000);
+
         storePage.clickAddToCartBtn(product.getName());
-        Thread.sleep(6000);
+
         CartPage cartPage = storePage.clickViewCart();
-        Thread.sleep(5000);
+
         Assert.assertEquals(cartPage.getProductName(), product.getName());
 
         CheckoutPage checkoutPage = cartPage.
                 clickCheckoutBtn().
                 setBillingAddress(billingAddress);
-        Thread.sleep(5000);
+
         driver.findElement(By.cssSelector("#place_order")).click();
-        Thread.sleep(5000);
+
         Assert.assertEquals(checkoutPage.getNotice(), "Thank you. Your order has been received.");
 
     }

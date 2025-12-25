@@ -2,8 +2,14 @@ package org.selenium.pom.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.selenium.pom.objects.BillingAddress;
 import org.selenium.pom.base.BasePage;
+
+import java.time.Duration;
+import java.util.List;
 
 public class CheckoutPage extends BasePage {
     private final By firstnameFld = By.cssSelector("#billing_first_name");
@@ -14,6 +20,9 @@ public class CheckoutPage extends BasePage {
     private final By billingEmailFld = By.cssSelector("#billing_email");
     private final By placeOrderBtn = By.cssSelector("#place_order");
     private final By successNotice = By.cssSelector(".woocommerce-notice");
+
+    //Missing 4 private final (ShowLogin)
+    private final By overlay = By.cssSelector(".blockUI blockOverlay");
 
     public CheckoutPage(WebDriver driver) {
         super(driver);
@@ -46,6 +55,15 @@ public class CheckoutPage extends BasePage {
         return this;
     }
     public CheckoutPage placeOrder (){
+        List<WebElement> overlays =  driver.findElements(overlay);
+        System.out.println("OVERLAY SIZE: " + overlays.size());
+        if(overlays.size() > 0){
+            new WebDriverWait(driver, Duration.ofSeconds(15)).until(
+                    ExpectedConditions.invisibilityOfAllElements()
+            );
+
+            System.out.println("OVERLAYS ARE INVISIBLE: ");
+        }
         driver.findElement(placeOrderBtn).click();
         return new CheckoutPage(driver);
         //return this;
