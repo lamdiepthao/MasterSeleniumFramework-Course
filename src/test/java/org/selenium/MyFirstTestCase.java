@@ -26,22 +26,22 @@ public class MyFirstTestCase extends BaseTest {
         Product product = new Product(1215);
         StorePage storePage = new HomePage(driver).
                 load().
-                navigateToStoreUsingMenu().
-                search(searchFor);
-
+                navigateToStoreUsingMenu();
+        storePage.isLoaded();
+        storePage.search(searchFor);
         Assert.assertEquals(storePage.getTitle(),"Search results: “" + searchFor + "”");
-
         storePage.clickAddToCartBtn(product.getName());
 
         CartPage cartPage = storePage.clickViewCart();
-
+        cartPage.isLoaded();
         Assert.assertEquals(cartPage.getProductName(), product.getName());
 
         CheckoutPage checkoutPage = cartPage.
                 clickCheckoutBtn().
-                setBillingAddress(billingAddress);
-
-        driver.findElement(By.cssSelector("#place_order")).click();
+                setBillingAddress(billingAddress).
+                selectDirectTransferBank().
+                placeOrder();
+        //driver.findElement(By.cssSelector("#place_order")).click();
 
         Assert.assertEquals(checkoutPage.getNotice(), "Thank you. Your order has been received.");
 

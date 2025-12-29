@@ -1,8 +1,10 @@
 {
                   "firstName": "thao2",
                   "lastName": "thao",
+                  "country": "India",
                   "addressLineOne": "San Francisco",
                   "city": "San Francisco",
-                  "postCode": "94188",
+                  "state": "Maharashtra",
+                  "postCode": "411001",
                   "email": "thaothao2@gmail.com"
 }
